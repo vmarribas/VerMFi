@@ -104,7 +104,7 @@ Evaluate secure 2nd-order DOM AND gate:
 ```
 $ ./verif_tool test_files/examples/AND/and_dom2.vhd
 ```
-![VerMI](https://github.com/vmarribas/VerMFi/blob/master/VerMI_gif.gif)
+![VerMI](https://github.com/vmarribas/VerMFi/blob/master/VerMI_gif2.gif)
 
 ##### FA evaluation with VerFI
 
@@ -122,6 +122,7 @@ $ ./prepr_faults test_files/examples/Arbiter/code_hdl_models_arbiter.v
 $ ./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbiter.md faults/config_faults_arbiter.md
 ```
 
+![VerFI](https://github.com/vmarribas/VerMFi/blob/master/VerFI_gif.gif)
 
 ## How does it work
 

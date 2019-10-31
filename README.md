@@ -6,9 +6,9 @@ This tool allows you to perform Side-Channel and Fault Analysis evaluations. The
 
 ## Requirements
 
-* C++11 standard to compile the code  
-* Synopsys Design Compiler to generate the netlist  
-* Alternatively: open source YOSYS: refer to Installing_YOSYS.md for more information  
+* C++11 standard to compile the code.  
+* Synopsys Design Compiler to generate the netlist.  
+* Alternatively: open source YOSYS. 
   
   
 

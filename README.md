@@ -1,10 +1,7 @@
 # VerMFi
 ## Verification tool for Masked implementations and Fault injection
 
-This tool allows you to verify if the Threshold Implementation of your algorithm fulfill the conditions of TI to be secure, i.e. Correctness, Non-completeness and Uniformity.
-Correctness can be tested trivially with a calculator, so this property check is not implemented. For the moment the application verifies the Non-completeness property.
-
-The tool will synthesize your design and then analyze the netlist produced. You need to be able to "source" your Design Compiler to use the tool.
+This tool allows you to perform Side-Channel and Fault Analysis evaluations. The first part, VerMI, verifies whether your algorithm fulfills  the Threshold Implementation properties, i.e. Non-completeness and Uniformity. The second part of the tool performs fault simulation to evaluate the resistance of your design against faults. The tool supports random or crafted fault injections with extreme flexibility, allowing it to operate in multiple different fault models.
 
 
 ## Requirements
@@ -23,7 +20,8 @@ source your DC Compiler if you add the correct path to the "run" file. It will
 also call "make" directly to compile the program.
 
 Compile:  
-	`source run` (this initializes all the folders, by default already included) or `make all`
+	`source run` (this initializes all the folders, by default already included) or  
+  `make all`
 
 To execute VerMI:  
 ​	`./verif_tool $top_module_file`  
@@ -166,12 +164,12 @@ analyze the specified outputs only):
 
 !! Make sure you do not forget the last dot, otherwise you will get "Segmentation fault".  
 !! Inputs should go in the same order as in the module declaration.  
-!! VerMI will only take into account the info. until Check_bits (not included), and VerFI will only read Check_bits. 
+!! VerMI will only take into account the info. until Check_bits (not included), and VerFI will only read Check_bits.  
 !! Several things to take into account when specifying Registers Layers:
   * You will specify the signal that goes out of your register.  
   * Synopsys (Yosys) might not use this specific name if for example you have an immediate buffer or a permutation.  
   * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are name as your output signal).  
-  * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found.  
+  * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found. Several constrains are specified that may not be used, and so Synopsys throws an Error while synthesizing. this does not harm the synthesis process, so do not mind these errors.  
   * If the tool does not find the name you specified in the register output and neither it finds it in the name of the register, an error will be shown informing about the problematic signal.
   * Only include sensitive data from registers, do not include control signals.  
 
@@ -195,12 +193,14 @@ Header:
 
 
 ## VerMI
+* Part of the tool performing Side-Channel Analysis.  
 * Important, add the header with the sensitive and the random variables as explained above.
 * The tool produces several files, a different one for each different test and evaluation. The 
 tool points you to the adequate file when finished the given evaluation.
 
 
 ## VerFI
+* Part of the tool performing Fault Analysis.  
 * The second part of the tool runs in two steps, first preprocessing, to generate necessary configuration
 files, and then the actual analysis. You can see how to execute VerFI in the Compilation section.
 * You can decide how many traces to evaluate in the form of input test vectors by defining them your self 
@@ -227,3 +227,33 @@ find more information in the configuration files.
 * VerMI does not support multivariate security at higher orders, it only provides univariate assesment
 * VerFI: clock cycles range selection is not fully working in the componont-wise fault injection
 * VerFI: debug option for Yosys not supported
+
+
+## Citation
+
+If you use this tool for your work and you will publish it as a paper, you can cite the tool as follows.  
+If you performed a Side-Channel evaluation, you can cite VerMI:  
+BibTeX entry for LaTeX  
+```bibtex
+@inproceedings{DBLP:conf/icecsys/ArribasNR18,
+  author    = {Victor Arribas and
+               Svetla Nikova and
+               Vincent Rijmen},
+  title     = {VerMI: Verification Tool for Masked Implementations},
+  booktitle = {{ICECS}},
+  pages     = {381--384},
+  publisher = {{IEEE}},
+  year      = {2018}
+}
+```
+Or  
+> V. Arribas, S. Nikova, and V. Rijmen, “VerMI: Verification Tool for Masked Implementations,” in 25th IEEE International Conference on Electronics, Circuits, and Systems. Bordeaux,FR: IEEE, 2018, p. 4.
+
+If you performed a fault evaluation, you can cite VerFI:  
+```bibtex
+comming soon
+```
+
+And finally, if you used both, you can cite both :)
+
+

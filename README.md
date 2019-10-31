@@ -39,7 +39,7 @@ Other options:
 
 
 ## YOSYS
-Include all the files you want to synthesize in the destination folder within "/test_files".  
+To successfully synthesize files with Yosys, include all the files you want to synthesize in the destination folder within "/test_files".  
 Do not include any sub-directories. Do not include any test-bench.  
 Yosys for SCA analysis is not yet supported in this version.
 
@@ -68,7 +68,7 @@ $ make
 $ make test
 $ sudo make install
 ```
-NOTE: the last step, `sudo make install` is not needed, if for example you do not have superuser rights. However, in this case, is necessary to have yosys/ at the top of the tool's directory and have it compiled (the tool will call it by `./yosys/yosys synthesis.ys`)
+NOTE: the last step, `sudo make install` is not needed, if for example you do not have superuser rights. However, in this case, is necessary to have the repository "yosys/" at the top of the tool's directory and have it compiled (the tool will call it by `./yosys/yosys synthesis.ys`)
 
 ##### Mac OS X
 Install with Hombrew (alternatives in original Yosys Git)

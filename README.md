@@ -160,7 +160,7 @@ layer_1_InVariable_numberOfVariable_numberOfInShare.
 ```
 
 You can also optionally include which outputs to evaluate. Include this only 
-if there is an output in your module you do not it to be analyzed (the tool will 
+if there is an output in your module you do not want it to be analyzed (the tool will 
 analyze the specified outputs only):  
 ```
 -- Outputs_check: outputToCheck_1, ..., outputToCheck_N.  
@@ -172,13 +172,13 @@ analyze the specified outputs only):
 !! VerMI will only take into account the info. until Check_bits (not included), and VerFI will only read Check_bits.  
 !! Several things to take into account when specifying Registers Layers:
   * You will specify the signal that goes out of your register.  
-  * Synopsys (Yosys) might not use this specific name if for example you have an immediate buffer or a permutation.  
+  * Synopsys might not use this specific name if for example you have an immediate buffer or a permutation.  
   * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are name as your output signal).  
-  * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found. Several constrains are specified that may not be used, and so Synopsys throws an Error while synthesizing. this does not harm the synthesis process, so do not mind these errors.  
+  * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found. Several constrains are specified that may not be used, and so Synopsys throws several Error while synthesizing. This does not harm the synthesis process, so do not mind these errors.  
   * If the tool does not find the name you specified in the register output and neither it finds it in the name of the register, an error will be shown informing about the problematic signal.
   * Only include sensitive data from registers, do not include control signals.  
 
-!! Check_bits signal does not need to be an output, you can select any intermediate wire. Note that, if you select an intermediate wire, the synthesizer might change the name of this wire and VerFI will not get which signal to look at.  
+!! Check_bits signal does not need to be an output, you can select any intermediate wire. Note that, if you select an intermediate wire, the synthesizer might change the name of this wire or trim it, and then VerFI will not get which signal to look at.  
 
 
 Example:
@@ -236,7 +236,7 @@ find more information in the configuration files.
 
 ## Citation
 
-If you use this tool for your work and you will publish it as a paper, you can cite the tool as follows.  
+If you use this tool for your work and you will publish it, you can cite the tool as follows.  
 If you performed a Side-Channel evaluation, you can cite VerMI:  
 BibTeX entry for LaTeX  
 ```bibtex

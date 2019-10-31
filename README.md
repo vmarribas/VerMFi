@@ -43,7 +43,7 @@ Include all the files you want to synthesize in the destination folder within "/
 Do not include any sub-directories. Do not include any test-bench.  
 Yosys for SCA analysis is not yet supported in this version.
 
-To get Yosys working, clone source code from GIT repository, in the main path of the tool:
+To get Yosys working, get the GIT repository:
 ```
 $ git clone https://github.com/cliffordwolf/yosys.git
 ```
@@ -68,7 +68,7 @@ $ make
 $ make test
 $ sudo make install
 ```
-NOTE: the last step, `sudo make install` is not needed if you do not have superuser rights.
+NOTE: the last step, `sudo make install` is not needed, if for example you do not have superuser rights. However, in this case, is necessary to have yosys/ at the top of the tool's directory and have it compiled (the tool will call it by `./yosys/yosys synthesis.ys`)
 
 ##### Mac OS X
 Install with Hombrew (alternatives in original Yosys Git)

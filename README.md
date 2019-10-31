@@ -20,11 +20,11 @@ source your DC Compiler if you add the correct path to the "run" file. It will
 also call "make" directly to compile the program.
 
 Compile:  
-	`source run` (this initializes all the folders, by default already included) or  
-  `make all`
+	`$ source run` (this initializes all the folders, by default already included) or  
+  `$ make all`
 
 To execute VerMI:  
-​	`./verif_tool $top_module_file`  
+​	`$ ./verif_tool $top_module_file`  
 
 To execute VerFI:
 * Preprocessing (generate config. files): `./prepr_faults $top_module_file`  
@@ -45,43 +45,43 @@ Yosys for SCA analysis is not yet supported in this version.
 
 To get Yosys working, clone source code from GIT repository, in the main path of the tool:
 ```
-git clone https://github.com/cliffordwolf/yosys.git
+$ git clone https://github.com/cliffordwolf/yosys.git
 ```
 To install:
 ##### Linux 
 ```
-sudo apt-get install build-essential clang bison flex \
-	libreadline-dev gawk tcl-dev libffi-dev git \
-	graphviz xdot pkg-config python3 libboost-system-dev \
-	libboost-python-dev libboost-filesystem-dev
+$ sudo apt-get install build-essential clang bison flex \
+	  libreadline-dev gawk tcl-dev libffi-dev git \
+	  graphviz xdot pkg-config python3 libboost-system-dev \
+	  libboost-python-dev libboost-filesystem-dev
 
 ```
 Configure build and/or change build settings in Makefile:
 ```
-make config-clang
-vi Makefile
-vi Makefile.conf
+$ make config-clang
+$ vi Makefile
+$ vi Makefile.conf
 ```
 Build, test and install:
 ```
-make
-make test
-sudo make install
+$ make
+$ make test
+$ sudo make install
 ```
 NOTE: the last step, `sudo make install` is not needed if you do not have superuser rights.
 
 ##### Mac OS X
 Install with Hombrew (alternatives in original Yosys Git)
 ```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-brew tap Homebrew/bundle && brew bundle
+$ brew tap Homebrew/bundle && brew bundle
 
-sudo port install bison flex readline gawk libffi \
-	git graphviz pkgconfig python36 boost
+$ sudo port install bison flex readline gawk libffi \
+	  git graphviz pkgconfig python36 boost
 ```
 ```
-brew install yosys
+$ brew install yosys
 ```
   
 For more information, you can check the Yosys git page.
@@ -96,24 +96,30 @@ Several examples are included in the Git, to show how VerMI and VerFI work:
 ##### SCA evaluation with VerMI
 
 Evaluate insecure 2nd-order DOM AND gate:  
-`./verif_tool test_files/examples/AND/and_dom2_insecure.vhd`
+```
+$ ./verif_tool test_files/examples/AND/and_dom2_insecure.vhd
+```
 
 Evaluate secure 2nd-order DOM AND gate:  
-`./verif_tool test_files/examples/AND/and_dom2.vhd`
+```
+$ ./verif_tool test_files/examples/AND/and_dom2.vhd
+```
 
 
 ##### FA evaluation with VerFI
 
 Evaluate an unprotected Keccak implementation (preprocessing not needed since netlist is provided already):  
-`./verif_tool test_files/examples/Keccak_p200/Keccak_p200.vhd inputs/kecca_ins2randIns.txt faults/faults_config_Keccak_p200_test.md`
+```
+$ ./verif_tool test_files/examples/Keccak_p200/Keccak_p200.vhd inputs/kecca_ins2randIns.txt faults/faults_config_Keccak_p200_test.md
+```
 
 There are several more faults comfiguration files you can play with to inject different faults. VHDL code running simulations with the same fault injection are included in ./test_files/examples/Keccak_p200/vhd_* so that you can compare the output of VerFI with actual HDL simulation.  
 
 Fault simulation using Yosys is also included. We have included a simple uprotected Arbiter HDL module:  
 ```
-make yss
-./prepr_faults test_files/examples/Arbiter/code_hdl_models_arbiter.v
-./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbiter.md faults/config_faults_arbiter.md
+$ make yss
+$ ./prepr_faults test_files/examples/Arbiter/code_hdl_models_arbiter.v
+$ ./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbiter.md faults/config_faults_arbiter.md
 ```
 
 

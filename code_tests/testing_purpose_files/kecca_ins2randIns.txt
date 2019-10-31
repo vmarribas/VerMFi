@@ -1,3 +1,5 @@
+> COMPANY:		COSIC, KU Leuven 
+> AUTHOR:		Victor Arribas
 
 # SIMULATION FILE
 

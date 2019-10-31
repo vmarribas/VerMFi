@@ -1,45 +1,13 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    12:49:29 07/22/2016 
--- Design Name: 
--- Module Name:    teta - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+-- The Keccak sponge function, designed by Guido Bertoni, Joan Daemen,
+-- Michaël Peeters and Gilles Van Assche. For more information, feedback or
+-- questions, please refer to our website: http://keccak.noekeon.org/
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    15:11:23 07/21/2016 
--- Design Name: 
--- Module Name:    chi_td_4shares - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
+-- Implementation by the designers,
+-- hereby denoted as "the implementer".
+
+-- To the extent possible under law, the implementer has waived all copyright
+-- and related or neighboring rights to the source code in this file.
+-- http://creativecommons.org/publicdomain/zero/1.0/
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library work;

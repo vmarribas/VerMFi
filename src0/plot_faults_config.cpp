@@ -83,6 +83,9 @@ void VerifTool::plot_faults_config(){
 	std::ofstream faults_config("faults/config_faults_"+nlHy_.topModule_+".md");
 	string spaces = "";
 
+	faults_config << "> File generated with VerFI, from https://github.com/vmarribas/VerMFi" << endl;
+	faults_config << endl;
+
 	faults_config << "# FAULTS CONFIGURATION FILE" << endl;
 	faults_config << endl;
 
@@ -175,6 +178,10 @@ void VerifTool::plot_components_fault_config(){
 	std::ofstream faults_config("faults/config_components_fault_"+nlHy_.topModule_+".md");
 	string spaces = "";
 
+	faults_config << "> File generated with VerFI, from https://github.com/vmarribas/VerMFi" << endl;
+	faults_config << endl;
+
+	
 	faults_config << "# FAULTS CONFIGURATION FILE" << endl;
 	faults_config << endl;
 

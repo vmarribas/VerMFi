@@ -1,3 +1,5 @@
+> File generated with VerFI, from https://github.com/vmarribas/VerMFi
+
 # FAULTS CONFIGURATION FILE
 
 ## COMPONENTS

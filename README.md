@@ -104,7 +104,7 @@ Evaluate secure 2nd-order DOM AND gate:
 ```
 $ ./verif_tool test_files/examples/AND/and_dom2.vhd
 ```
-
+![VerMI](https://github.com/vmarribas/VerMFi/blob/master/VerMI_gif.gif)
 
 ##### FA evaluation with VerFI
 

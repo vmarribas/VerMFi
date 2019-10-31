@@ -22,8 +22,8 @@ This file will create several folders needed for the synthesis and optionally
 source your DC Compiler if you add the correct path to the "run" file. It will 
 also call "make" directly to compile the program.
 
-Type:
-	"source run"  
+Compile:  
+	`source run` (this initializes all the folders, by default already included) or `make all`
 
 To execute VerMI:  
 ​	`./verif_tool $top_module_file`  
@@ -33,8 +33,11 @@ To execute VerFI:
 * Fault evaluation: `./verif_tool $top_module_file $inputs_file $fault_config_file`  
 
 Other options:
+* Compile only VerMI/VerFI: `make`  
+* Compile only preprocessing stage: `make fp`  
 * If you want to use Yosys (only for VerFI): `make yss`  
 * To run the code tests: `make test`  
+* To clean created results files: `make clean`  
 
 
 ## YOSYS
@@ -88,6 +91,34 @@ For more information, you can check the Yosys git page.
 !! NOTE: when analyzing a design with Yosys, include only the files to analyze in the target directory WITHOUT any testbench or subdirectories
 
 
+## Examples
+
+Several examples are included in the Git, to show how VerMI and VerFI work:
+
+##### SCA evaluation with VerMI
+
+Evaluate insecure 2nd-order DOM AND gate:  
+`./verif_tool test_files/examples/AND/and_dom2_insecure.vhd`
+
+Evaluate secure 2nd-order DOM AND gate:  
+`./verif_tool test_files/examples/AND/and_dom2.vhd`
+
+
+##### FA evaluation with VerFI
+
+Evaluate an unprotected Keccak implementation (preprocessing not needed since netlist is provided already):  
+`./verif_tool test_files/examples/Keccak_p200/Keccak_p200.vhd inputs/kecca_ins2randIns.txt faults/faults_config_Keccak_p200_test.md`
+
+There are several more faults comfiguration files you can play with to inject different faults. VHDL code running simulations with the same fault injection are included in ./test_files/examples/Keccak_p200/vhd_* so that you can compare the output of VerFI with actual HDL simulation.  
+
+Fault simulation using Yosys is also included. We have included a simple uprotected Arbiter HDL module:  
+```
+make yss
+./prepr_faults test_files/examples/Arbiter/code_hdl_models_arbiter.v
+./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbiter.md faults/config_faults_arbiter.md
+```
+
+
 ## How does it work
 
 * The tool supports VHDL (not with Yosys) and Verilog files.
@@ -106,12 +137,7 @@ including area among others. By looking at these files you can debug errors in y
 * Once the tool is started you can select either Side-Channel evaluation (1) or Fault Injection (2).  
 
 
-## VerMI
-* Important, add the header with the sensitive and the random variables as explained above.
-* The tool produces several files, a different one for each different test and evaluation. The 
-tool points you to the adequate file when finished the given evaluation.
-
-### Header 
+## Header 
 
 In order to perform the check, we need to pass the tool some information, including 
 sensitive data, randomness, check bits, ...  
@@ -119,10 +145,12 @@ sensitive data, randomness, check bits, ...
 The header structure should have the next format:
 ```
 -- Input_shares: sharedInVariable_1_1, sharedInVariable_1_2, ..., sharedInVariable_1_numberOfInShares; ...; 
-sharedInVariable_numberOfVariables_1, sharedInVariable_numberOfVariables_2, ..., sharedInVariable_numberOfVariable_numberOfInShare.  
+sharedInVariable_numberOfVariables_1, sharedInVariable_numberOfVariables_2, ...,  
+sharedInVariable_numberOfVariable_numberOfInShare.  
 -- Random_vars: randomVar_1, ..., randomVar_N.  
 -- Regs_layer: layer_1_InVariable_1_1, layer_1_InVariable_1_2, ..., layer_1_InVariable_1_numberOfInShares; ...; 
-layer_1_InVariable_numberOfVariables_1, layer_1_InVariable_numberOfVariables_2, ..., layer_1_InVariable_numberOfVariable_numberOfInShare.  
+layer_1_InVariable_numberOfVariables_1, layer_1_InVariable_numberOfVariables_2, ...,  
+layer_1_InVariable_numberOfVariable_numberOfInShare.  
 -- Regs_layer: layer_2... .  
 -- Regs_layer: layer_TotalNumbOfPipelineRegs... .  
 -- Check_bits: checkVar_1, ..., checkVar_2.  
@@ -159,10 +187,17 @@ input [7:0] r;
 output[7:0] z1, z2;  
 ```
 Header:
+```
 -- Input_shares: x1, x2; y1, y2. (Separate variables with ";", do not forget the "." at the end)
 -- Random_vars: r.  
 -- Regs_layer: crossTerm1_reg, crossTerm2_reg, crossTerm3_reg, crossTerm4_reg.  
+```
 
+
+## VerMI
+* Important, add the header with the sensitive and the random variables as explained above.
+* The tool produces several files, a different one for each different test and evaluation. The 
+tool points you to the adequate file when finished the given evaluation.
 
 
 ## VerFI

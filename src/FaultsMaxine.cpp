@@ -2043,6 +2043,9 @@ bool FaultsMaxine::fault_injection(std::string faultsConfigFile){
 
 void FaultsMaxine::go(std::string inputsSimFile, std::string faultsConfigFile){
 
+	faults_file_ << "> File generated with VerFI, from https://github.com/vmarribas/VerMFi" << endl;
+	faults_file_ << endl;
+
 	faults_file_ << "# FAULTS EVALUATION SUMMARY" << endl;
 
 	float coverage = 0;
@@ -2060,6 +2063,13 @@ void FaultsMaxine::go(std::string inputsSimFile, std::string faultsConfigFile){
 	std::ofstream nonDetectedFaultsf;
 	nonDetectedFaultsf.open("./faults/nonDetected_faults_"+netList_.topModule_+".md");
 
+	nonDetectedFaultsf << "> File generated with VerFI, from https://github.com/vmarribas/VerMFi" << endl;
+	nonDetectedFaultsf << endl;
+
+	ineffectiveFaultsf << "> File generated with VerFI, from https://github.com/vmarribas/VerMFi" << endl;
+	ineffectiveFaultsf << endl;
+
+	
 	nonDetectedFaultsf << "## NON DETECTED FAULTS" << endl;
 	ineffectiveFaultsf << "## INEFFECTIVE FAULTS" << endl;
 

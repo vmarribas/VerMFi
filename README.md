@@ -39,9 +39,7 @@ Other options:
 
 
 ## YOSYS
-To successfully synthesize files with Yosys, include all the files you want to synthesize in the destination folder within "/test_files".  
-Do not include any sub-directories. Do not include any test-bench.  
-Yosys for SCA analysis is not yet supported in this version.
+To successfully synthesize files with Yosys, include all the files you want to synthesize in a new folder within "/test_files".  
 
 To get Yosys working, get the GIT repository:
 ```

@@ -27,8 +27,8 @@ To execute VerMI:
 ​	`$ ./verif_tool $top_module_file`  
 
 To execute VerFI:
-* Preprocessing (generate config. files): `./prepr_faults $top_module_file`  
-* Fault evaluation: `./verif_tool $top_module_file $inputs_file $fault_config_file`  
+* Preprocessing (generate config. files): `$ ./prepr_faults $top_module_file`  
+* Fault evaluation: `$ ./verif_tool $top_module_file $inputs_file $fault_config_file`  
 
 Other options:
 * Compile only VerMI/VerFI: `make`  

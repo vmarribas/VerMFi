@@ -1,0 +1,16 @@
+#!/bin/csh -fe
+source /users/micas/micas/design/scripts/synopsys_2017.09.rc
+
+mkdir logfiles
+
+mkdir reports
+
+mkdir netlist
+
+mkdir netlist/yosys
+
+mkdir inputs
+
+mkdir faults
+
+make all

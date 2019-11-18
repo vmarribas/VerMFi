@@ -256,8 +256,16 @@ Or
 
 If you performed a fault evaluation, you can cite VerFI:  
 ```bibtex
-comming soon
-```
+@misc{cryptoeprint:2019:1312,
+    author = {Victor Arribas and Felix Wegener and Amir Moradi and Svetla Nikova},
+    title = {Cryptographic Fault Diagnosis using VerFI},
+    howpublished = {Cryptology ePrint Archive, Report 2019/1312},
+    year = {2019},
+    note = {\url{https://eprint.iacr.org/2019/1312}},
+}
+```  
+Or  
+> V. Arribas, F. Wegener, A. Moradi, and S. Nikova, “Cryptographic fault diagnosis using verfi,” Cryptology ePrint Archive, Report 2019/1312, 2019, https://eprint.iacr.org/2019/1312.
 
 And finally, if you used both, you can cite both :)
 

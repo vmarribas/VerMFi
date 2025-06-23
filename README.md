@@ -3,8 +3,22 @@
 
 This tool allows you to perform Side-Channel and Fault Analysis evaluations. The first part, VerMI, verifies whether your algorithm fulfills  the Threshold Implementation properties, i.e. Non-completeness and Uniformity. The second part of the tool performs fault simulation to evaluate the resistance of your design against faults. The tool supports random or crafted fault injections with extreme flexibility, allowing it to operate in multiple different fault models.
 
+## Running as Docker container (yosys only)
+Build the provided Dockerfile and run an interactive container:
+```
+$ docker build -t vermfi .
+$ docker run --name vermfi -it vermfi bash
+```
 
-## Requirements
+Cleanup:
+```
+$ docker container rm vermfi
+$ docker image rm vermfi
+```
+
+## Run natively
+
+### Requirements
 
 * C++11 standard to compile the code.  
 * Synopsys Design Compiler to generate the netlist.  
@@ -12,7 +26,7 @@ This tool allows you to perform Side-Channel and Fault Analysis evaluations. The
   
   
 
-## Compilation
+### Compilation
 
 To compile the code, use the attached Bash file "run". 
 This file will create several folders needed for the synthesis and optionally 
@@ -21,7 +35,8 @@ also call "make" directly to compile the program.
 
 Compile:  
 	`$ source run` (this initializes all the folders, by default already included) or  
-  `$ make all`
+  `$ make all`  
+If you want to use Yosys (only for VerFI): `make yss`
 
 To execute VerMI:  
 ​	`$ ./verif_tool $top_module_file`  
@@ -31,14 +46,13 @@ To execute VerFI:
 * Fault evaluation: `$ ./verif_tool $top_module_file $inputs_file $fault_config_file`  
 
 Other options:
-* Compile only VerMI/VerFI: `make`  
-* Compile only preprocessing stage: `make fp`  
-* If you want to use Yosys (only for VerFI): `make yss`  
+* Compile only VerMI/VerFI (no Yosys support): `make`  
+* Compile only preprocessing stage: `make fp`
 * To run the code tests: `make test`  
 * To clean created results files: `make clean`  
 
 
-## YOSYS
+### YOSYS
 To successfully synthesize files with Yosys, include all the files you want to synthesize in a new folder within "/test_files".  
 
 To get Yosys working, get the GIT repository:
@@ -46,7 +60,7 @@ To get Yosys working, get the GIT repository:
 $ git clone https://github.com/cliffordwolf/yosys.git
 ```
 To install:
-##### Linux 
+### Linux 
 ```
 $ sudo apt-get install build-essential clang bison flex \
 	  libreadline-dev gawk tcl-dev libffi-dev git \
@@ -68,7 +82,7 @@ $ sudo make install
 ```
 NOTE: the last step, `sudo make install` is not needed, if for example you do not have superuser rights. However, in this case, is necessary to have the repository "yosys/" at the top of the tool's directory and have it compiled (the tool will call it by `./yosys/yosys synthesis.ys`)
 
-##### Mac OS X
+### macOS
 Install with Hombrew (alternatives in original Yosys Git)
 ```
 $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -91,7 +105,7 @@ For more information, you can check the Yosys git page.
 
 Several examples are included in the Git, to show how VerMI and VerFI work:
 
-##### SCA evaluation with VerMI
+### SCA evaluation with VerMI
 
 Evaluate insecure 2nd-order DOM AND gate:  
 ```
@@ -104,7 +118,7 @@ $ ./verif_tool test_files/examples/AND/and_dom2.vhd
 ```
 ![VerMI](https://github.com/vmarribas/VerMFi/blob/master/VerMI_gif.gif)
 
-##### FA evaluation with VerFI
+### FA evaluation with VerFI
 
 Evaluate an unprotected Keccak implementation (preprocessing not needed since netlist is provided already):  
 ```
@@ -122,6 +136,17 @@ $ ./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbi
 
 ![VerFI](https://github.com/vmarribas/VerMFi/blob/master/VerFI_gif.gif)
 
+## FA evaluation of externally-synthesized design
+Put the design's Verilog netlist inside the `netlist` directory. The filename has to follow the scheme `module + "_hierarchy.v"`.  
+If you compiled VerFI with `make yss`, put the design's Verilog RTL netlist inside the `netlist/yosys` directory instead (you may need to create the `yosys` subdirectory). The filename has
+to follow the scheme `module + "_yosys.v"`. Dashes inside `module` are converted to underscores. For ease of debugging, this version outputs which files it is trying to read the netlist from. I was able to make this to work only in the latter case, so I suggest to compile VerFI with Yosys support. But it may depend on the kind of synthesis you do for the design under test.  
+
+Then, invoke `prepr_faults` directly on the Verilog netlist. The invocation will look like `./prepr_faults netlist/yosys/module_yosys.v`. This will take care of generating configuration 
+files and of generating a logic-level Verilog netlist for your design. This, at least, is what happens if you compiled VerFI with Yosys support. It is also possible to invoke it directly on the VHDL design, but in both cases only after putting the RTL netlist in the right directory and with the right name. I have to check if this leads to different results, let's use diff for this. 
+
+Look inside the faults directory for the generated configuration file, and edit it as needed. Its name will have the form `"config_components_fault_" + module`. You also need an additional configuration file specifying the input values to use during the FI campaign which you can write by taking `inputs/aaDefault_inputs_file.md` as model. 
+
+If everything went good so far, you can now attempt your analysis using `verif_tool` as shown above. 
 ## How does it work
 
 * The tool supports VHDL (not with Yosys) and Verilog files.
@@ -129,7 +154,7 @@ $ ./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbi
 for different tests in different directories inside "/test_files" (the tool will synthesize all 
 the files within the same directory as the provided TOP module).
 * When executing the tool, the ONLY file you have to specify as argument is the TOP MODULE. 
-The tool will synthesize all needed files (as soon as all of them are in the same directory). 
+The tool will synthesize all needed files (as long as all of them are in the same directory). 
 Your input file must contain either: only your top module or if more modules 
 are included in the given file, the top module must be declared first.  
 * The tool will output several files: analyze and compile processes logfiles ("logfiles" folder), 
@@ -145,7 +170,7 @@ including area among others. By looking at these files you can debug errors in y
 In order to perform the check, we need to pass the tool some information, including 
 sensitive data, randomness, check bits, ...  
 
-The header structure should have the next format:
+The header structure should have the following format:
 ```
 -- Input_shares: sharedInVariable_1_1, sharedInVariable_1_2, ..., sharedInVariable_1_numberOfInShares; ...; 
 sharedInVariable_numberOfVariables_1, sharedInVariable_numberOfVariables_2, ...,  
@@ -159,9 +184,7 @@ layer_1_InVariable_numberOfVariable_numberOfInShare.
 -- Check_bits: checkVar_1, ..., checkVar_2.  
 ```
 
-You can also optionally include which outputs to evaluate. Include this only 
-if there is an output in your module you do not want it to be analyzed (the tool will 
-analyze the specified outputs only):  
+You can also optionally include which outputs to evaluate. Include this only if there is an output in your module you do not want it to be analyzed (the tool will analyze the specified outputs only):  
 ```
 -- Outputs_check: outputToCheck_1, ..., outputToCheck_N.  
 ```
@@ -169,11 +192,11 @@ analyze the specified outputs only):
 
 !! Make sure you do not forget the last dot, otherwise you will get "Segmentation fault".  
 !! Inputs should go in the same order as in the module declaration.  
-!! VerMI will only take into account the info. until Check_bits (not included), and VerFI will only read Check_bits.  
+!! VerMI will only take into account the info until Check_bits (not included), and VerFI will only read Check_bits.  
 !! Several things to take into account when specifying Registers Layers:
   * You will specify the signal that goes out of your register.  
   * Synopsys might not use this specific name if for example you have an immediate buffer or a permutation.  
-  * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are name as your output signal).  
+  * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are named as your output signal).  
   * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found. Several constrains are specified that may not be used, and so Synopsys throws several Error while synthesizing. This does not harm the synthesis process, so do not mind these errors.  
   * If the tool does not find the name you specified in the register output and neither it finds it in the name of the register, an error will be shown informing about the problematic signal.
   * Only include sensitive data from registers, do not include control signals.  
@@ -208,14 +231,14 @@ tool points you to the adequate file when finished the given evaluation.
 * Part of the tool performing Fault Analysis.  
 * The second part of the tool runs in two steps, first preprocessing, to generate necessary configuration
 files, and then the actual analysis. You can see how to execute VerFI in the Compilation section.
-* You can decide how many traces to evaluate in the form of input test vectors by defining them your self 
+* You can decide how many traces to evaluate in the form of input test vectors by defining them yourself 
 or by letting the tool feed random inputs. The tool will repeat the same analysis for all the input test vectors.
 * For the tool to be able to perform the simulation, only certain signals are recognized as control signals:  
 ```
 "clk", "rst", "load", "start" as inputs 
 "done" OR "ready" as output. Check_bits can be any wire, specified in the header.
 ```
-Please, make sure your control signals are spelled in the same way (capital sensitive). Your 
+Please, make sure your control signals are spelled in the same way (case sensitive). Your 
 framework can have any combination of these signals, or none of them, but no more than those. Other 
 inputs will be taken as regular inputs, to which value should be given in the input test vectors. The 
 output will similarly include all outputs except the ready signal and the check bits (if these were 

@@ -51,9 +51,11 @@ using namespace std;
 	//Read file
 	#ifndef YOSYS
 		fNetlistHy_.open("./netlist/" + module + "_hierarchy.v");
+        cout << "Opening file: " << "./netlist/" + module + "_hierarchy.v" << endl;	//Doesn't get printed
 	#else
 		fNetlistHy_.open("./netlist/yosys/" + module + "_yosys.v");
 		// fNetlistHy_.open("synth_yosys.v");
+        cout << "Opening file: " << "./netlist/yosys/" + module + "_yosys.v" << endl;	//Doesn't get printed
 	#endif
 
 	if (!fNetlistHy_.is_open()) return 0;

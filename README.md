@@ -136,16 +136,15 @@ $ ./verif_tool test_files/examples/Arbiter/code_hdl_models_arbiter.v inputs/arbi
 
 ![VerFI](https://github.com/vmarribas/VerMFi/blob/master/VerFI_gif.gif)
 
-#### FA evaluation of externally-synthesized design
+## FA evaluation of externally-synthesized design
 Put the design's Verilog netlist inside the `netlist` directory. The filename has to follow the scheme `module + "_hierarchy.v"`.  
 If you compiled VerFI with `make yss`, put the design's Verilog RTL netlist inside the `netlist/yosys` directory instead (you may need to create the `yosys` subdirectory). The filename has
-to follow the scheme `module + "_yosys.v"`. Dashes inside `module` are converted to underscores. For ease of debugging, this version outputs which files it is trying to read the netlist 
-from. I was able to make this to work only in the latter case, so I suggest to compile VerFI with Yosys support. But it may depend on the kind of synthesis you do for the design under test.  
+to follow the scheme `module + "_yosys.v"`. Dashes inside `module` are converted to underscores. For ease of debugging, this version outputs which files it is trying to read the netlist from. I was able to make this to work only in the latter case, so I suggest to compile VerFI with Yosys support. But it may depend on the kind of synthesis you do for the design under test.  
 
 Then, invoke `prepr_faults` directly on the Verilog netlist. The invocation will look like `./prepr_faults netlist/yosys/module_yosys.v`. This will take care of generating configuration 
-files and of generating a logic-level Verilog netlist for your design. This, at least, is what happens if you compiled VerFI with Yosys support.
+files and of generating a logic-level Verilog netlist for your design. This, at least, is what happens if you compiled VerFI with Yosys support. It is also possible to invoke it directly on the VHDL design, but in both cases only after putting the RTL netlist in the right directory and with the right name. I have to check if this leads to different results, let's use diff for this. 
 
-Look inside the inputs and faults directories for the generated configuration files, and edit them as needed. For some reason, the file inside the inputs directory will likely be called `aaDefault_inputs_file.md`, while instead the files inside the faults directory will have the form `"config_components_fault_" + module` and `"config_faults_" + module`.
+Look inside the faults directory for the generated configuration file, and edit it as needed. Its name will have the form `"config_components_fault_" + module`. You also need an additional configuration file specifying the input values to use during the FI campaign which you can write by taking `inputs/aaDefault_inputs_file.md` as model. 
 
 If everything went good so far, you can now attempt your analysis using `verif_tool` as shown above. 
 ## How does it work
@@ -185,9 +184,7 @@ layer_1_InVariable_numberOfVariable_numberOfInShare.
 -- Check_bits: checkVar_1, ..., checkVar_2.  
 ```
 
-You can also optionally include which outputs to evaluate. Include this only 
-if there is an output in your module you do not want it to be analyzed (the tool will 
-analyze the specified outputs only):  
+You can also optionally include which outputs to evaluate. Include this only if there is an output in your module you do not want it to be analyzed (the tool will analyze the specified outputs only):  
 ```
 -- Outputs_check: outputToCheck_1, ..., outputToCheck_N.  
 ```
@@ -199,7 +196,7 @@ analyze the specified outputs only):
 !! Several things to take into account when specifying Registers Layers:
   * You will specify the signal that goes out of your register.  
   * Synopsys might not use this specific name if for example you have an immediate buffer or a permutation.  
-  * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are name as your output signal).  
+  * Normally, if the tool does not find your specified name in the output wire, it will look at the register name and save the signal being used in that register (usually the registers are named as your output signal).  
   * VerMI sets don_touch constraints on the signals you specified only up to 5 levels of hierarchy. If the name is not preserved and the tool identifies the name of the register, it might be that a signal with the name "nX" (signals created by the synthesizer) is found. Several constrains are specified that may not be used, and so Synopsys throws several Error while synthesizing. This does not harm the synthesis process, so do not mind these errors.  
   * If the tool does not find the name you specified in the register output and neither it finds it in the name of the register, an error will be shown informing about the problematic signal.
   * Only include sensitive data from registers, do not include control signals.  

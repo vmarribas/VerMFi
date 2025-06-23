@@ -50,6 +50,7 @@ bool VerifTool::read_netlist()
 
     //Read file
     fNetlist_.open("./netlist/" + module + ".v");
+    cout << "Opening file: " << "./netlist/" + module + ".v" << endl;
     if (!fNetlist_.is_open()) return 0;
 
     //Ungrouped netlist
@@ -68,8 +69,10 @@ bool VerifTool::read_hy_netlist()
     //Read file
     #ifndef YOSYS
         fNetlistHy_.open("./netlist/" + module + "_hierarchy.v");
+        cout << "Opening file: " << "./netlist/" + module + "_hierarchy.v" << endl;
     #else
         fNetlistHy_.open("./netlist/yosys/" + module + "_yosys.v");
+        cout << "Opening file: " << "./netlist/yosys/" + module + "_yosys.v" << endl;
     #endif
 
     

@@ -64,7 +64,7 @@ Gate* GatesFactory::create_gate(std::string compDeclaration, wires &zeroOnes, ga
 		g->append_input_pin(p_in);
 		g->append_output_pin(p_out);
 
-		//Connect pins to wires and viceversa
+		//Connect pins to wires and vice versa
 		int tt = 0;
 	    int yy = 0;
 	    std::string wire;
@@ -99,7 +99,7 @@ Gate* GatesFactory::create_gate(std::string compDeclaration, wires &zeroOnes, ga
 		{
 			// std::cout << "Save in output" << std::endl;
 			p_in->append_wire(outsMap_[wire]);
-			//Check if the wire is already connected to a pin_to. If that is the case, start a fanaout
+			//Check if the wire is already connected to a pin_to. If that is the case, start a fanout
 			if (outsMap_[wire]->get_pinTo() == NULL)
     		{
     			outsMap_[wire]->append_pin_to(p_in);
@@ -430,7 +430,7 @@ Gate* GatesFactory::create_gate(std::string compDeclaration, wires &zeroOnes, ga
 
 		}
 		else{
-			// std::cout << "Gate: " << gateType << std::endl;
+			std::cout << "Gate: " << gateType << std::endl;
 			assert(1 < 0 && "Found a gate that is not implemented");
 		}
 
